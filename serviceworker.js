@@ -4,7 +4,7 @@
     );
 });
 
-self.navigator.serviceWorker.ready
+navigator.serviceWorker.ready
             .then(function (registration) {
                 console.log(registration);
                 return registration.pushManager.subscribe({ userVisibleOnly: true });
