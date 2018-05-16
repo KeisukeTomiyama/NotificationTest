@@ -8,6 +8,13 @@
 <body>
     サービスワーカーを試すページです!<br>
     まだサービスワーカーは動いていません！
+
+    <p>GCM EndPoint</p>
+    <p id="endpoint"></p>
+    <p>User Auth</p>
+    <p id="auth"></p>
+    <p>User PublicKey</p>
+    <p id="pubkey"></p>
 </body>
 <script type="text/javascript">
     if ('serviceWorker' in navigator) {
@@ -19,12 +26,21 @@
             })
             .then(function (subscription) {
                 console.log('GCM EndPoint is:' + subscription.endpoint);
+                var endp = document.getElementById("endpoint");
+                endp.textContent = subscription.endpoint;
                 var auth = subscription.getKey('auth') ? btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('auth')))) : '';
                 console.log('User Auth is:' + auth);
+                var authp = document.getElementById("auth");
+                authp.textContent = auth;
                 var publicKey = subscription.getKey('p256dh') ? btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('p256dh')))) : '';
                 console.log('User PublicKey is:' + publicKey);
+                var pubp = document.getElementById("pubkey");
+                pubp.textContent = publicKey;
             })
             .catch(console.error.bind(console));
     }
+
+    var div = document.getElementById("textDiv");
+    div.textContent = "my text";
 </script>
 </html>
