@@ -25,10 +25,10 @@
             navigator.serviceWorker.ready
                 .then(function (registration) {
                     console.log(registration);
-                    const applicationServerKey = urlB64ToUint8Array("AIzaSyBp428bC9cNTTM70S4192IBWcQPsb2xE4k");
+                    const appkey = urlB64ToUint8Array("AIzaSyBp428bC9cNTTM70S4192IBWcQPsb2xE4k");
                     registration.pushManager.subscribe({
                         userVisibleOnly: true,
-                        applicationServerKey: applicationServerKey
+                        applicationServerKey: appkey
                     })
                 })
                 .then(function (subscription) {
