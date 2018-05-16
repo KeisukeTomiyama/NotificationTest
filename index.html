@@ -31,10 +31,11 @@
             navigator.serviceWorker.ready
                 .then(function (registration) {
                     console.log(registration);
-                    return registration.pushManager.subscribe({
+                    const applicationServerKey = urlB64ToUint8Array("AAAAACE0m5o:APA91bEL_976d4rKro2cJBLb-Yfmk3x5gxNenqTTiqmUE74AW7MvqD6BeCmhvMIbFmBa0ReHj3Y2Qgk0gYYyyP5nxUs1rUPgQq827Zl4en2IRL4L5rCPEHjgdKLE2sVO3bESlW2Ct9OT");
+                    registration.pushManager.subscribe({
                         userVisibleOnly: true,
-                        applicationServerKey: "AAAAACE0m5o:APA91bEL_976d4rKro2cJBLb-Yfmk3x5gxNenqTTiqmUE74AW7MvqD6BeCmhvMIbFmBa0ReHj3Y2Qgk0gYYyyP5nxUs1rUPgQq827Zl4en2IRL4L5rCPEHjgdKLE2sVO3bESlW2Ct9OT"
-                    });
+                        applicationServerKey: applicationServerKey
+                    })
                 })
                 .then(function (subscription) {
                     console.log('GCM EndPoint is:' + subscription.endpoint);
