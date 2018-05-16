@@ -1,63 +1,30 @@
-﻿
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <link rel="manifest" href="./manifest.json">
-        <title>Index</title>
-    </head>
-    <body>
-        サービスワーカーを試すページです!<br>
-        まだサービスワーカーは動いていません！
-        <p>GCM EndPoint</p>
-        <p id="endpoint"></p>
-        <p>User Auth</p>
-        <p id="userauth"></p>
-        <p>User PublicKey</p>
-        <p id="publickey"></p>
-    </body>
-</html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="manifest" href="./manifest.json" />
+    <title></title>
+</head>
+<body>
+    サービスワーカーを試すページです!<br>
+    まだサービスワーカーは動いていません！
+</body>
 <script type="text/javascript">
-    $(function () {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./serviceworker.js');
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./serviceworker.js');
 
-            navigator.serviceWorker.ready
-                .then(function (registration) {
-                    console.log(registration);
-                    const appkey = urlB64ToUint8Array("AIzaSyBp428bC9cNTTM70S4192IBWcQPsb2xE4k");
-                    registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: appkey
-                    }).then(function (subscription) {
-                        console.log('GCM EndPoint is:' + subscription.endpoint);
-                        $("#endpoint").append(subscription.endpoint);
-                        var auth = subscription.getKey('auth') ? btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('auth')))) : '';
-                        console.log('User Auth is:' + auth);
-                        $("#userauth").append(auth);
-                        var pubpub = subscription.getKey('p256dh') ? btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('p256dh')))) : '';
-                        $("#publickey").append(pubpub);
-                        console.log('User PublicKey is:' + pubpub);
-                        //var curlCommand = 'curl --header "Authorization: key=' + API_KEY + '" --header Content-Type:"application/json" ' + subscription.endpoint + ' -d "{\\"registration_ids\\":[\\"' + subscriptionId + '\\"]}"';
-                    })
-                .catch(console.error.bind(console));
-                })
-                
-        }
-
-        function urlB64ToUint8Array(base64String) {
-            const padding = '='.repeat((4 - base64String.length % 4) % 4);
-            const base64 = (base64String + padding)
-              .replace(/\-/g, '+')
-              .replace(/_/g, '/');
-
-            const rawData = window.atob(base64);
-            const outputArray = new Uint8Array(rawData.length);
-
-            for (let i = 0; i < rawData.length; ++i) {
-                outputArray[i] = rawData.charCodeAt(i);
-            }
-            return outputArray;
-        }
-    });
+        navigator.serviceWorker.ready
+            .then(function (registration) {
+                return registration.pushManager.subscribe({ userVisibleOnly: true });
+            })
+            .then(function (subscription) {
+                console.log('GCM EndPoint is:' + subscription.endpoint);
+                var auth = subscription.getKey('auth') ? btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('auth')))) : '';
+                console.log('User Auth is:' + auth);
+                var publicKey = subscription.getKey('p256dh') ? btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('p256dh')))) : '';
+                console.log('User PublicKey is:' + publicKey);
+            })
+            .catch(console.error.bind(console));
+    }
 </script>
+</html>
