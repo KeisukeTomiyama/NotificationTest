@@ -1,13 +1,13 @@
 ﻿self.addEventListener('fetch', function (event) {
     event.respondWith(
-      new Response('サービスワーカーが動いています！')
+      new Response('Running')
     );
 });
 
 self.addEventListener('push', function (event) {
     console.log('Received a push message', event);
-    var title = "プッシュ通知です！";
-    var body = "プッシュ通知はこのようにして送られるのです";
+    var title = "New Push is Coming";
+    var body = "Notification Message";
 
     event.waitUntil(
         self.registration.showNotification(title, {
